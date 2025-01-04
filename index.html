@@ -56,6 +56,38 @@
             font-size: 18px;
             color: #3d1a54;
         }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            animation: confetti-fall 3s ease-in-out infinite;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100%) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        #button-next-message {
+            margin-top: 15px;
+            background: #3d1a54;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -63,12 +95,45 @@
 
     <div class="message" id="message">
         <p>Te amo muito meu amor ❤️</p>
+        <button id="button-next-message" onclick="showNextMessage()">Clique para mais</button>
     </div>
+
+    <audio id="romantic-music" src="musica-romantica.mp3" loop></audio> <!-- Adicione sua música aqui -->
 
     <script>
         function showMessage() {
             const message = document.getElementById('message');
+            const music = document.getElementById('romantic-music');
             message.style.transform = 'translate(-50%, -50%) scale(1)';
+            document.getElementById('button-next-message').style.display = 'block';
+            music.play();
+            generateConfetti();
+        }
+
+        function showNextMessage() {
+            const message = document.getElementById('message');
+            message.innerHTML = '<p>Você é a melhor parte da minha vida ❤️</p>';
+        }
+
+        function generateConfetti() {
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                document.body.appendChild(confetti);
+
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                confetti.style.backgroundColor = getRandomColor();
+
+                confetti.addEventListener('animationend', () => {
+                    confetti.remove();
+                });
+            }
+        }
+
+        function getRandomColor() {
+            const colors = ['#ff5733', '#33ff57', '#3357ff', '#f0f033', '#f033f0', '#33f0f0'];
+            return colors[Math.floor(Math.random() * colors.length)];
         }
     </script>
 </body>
